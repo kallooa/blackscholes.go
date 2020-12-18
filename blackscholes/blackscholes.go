@@ -77,7 +77,7 @@ func (bs *BS) calcDelta() float64 {
 }
 
 func (bs *BS) calcTheta() float64 {
-	return -((bs.UnderlyingPrice * bs.Volatility * bs.Norm.Cdf(bs.D1)) / (2 * math.Sqrt(bs.TimeToExpiration)) - bs.RiskFreeInterestRate * bs.StrikePrice * math.Exp(-bs.RiskFreeInterestRate * (bs.TimeToExpiration)) * bs.Norm.Cdf(bs.D2)) / 365
+	return -((bs.UnderlyingPrice * bs.Volatility * bs.Norm.Cdf(bs.D1)) / (2 * math.Sqrt(bs.TimeToExpiration)) - bs.RiskFreeInterestRate * bs.StrikePrice * math.Exp(-bs.RiskFreeInterestRate * (bs.TimeToExpiration)) * bs.Norm.Cdf(bs.D2)) / 365.25
 }
 
 func (bs *BS) calcVega() float64 {
