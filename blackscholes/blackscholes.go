@@ -59,30 +59,6 @@ func (bs *BS) Initialize() {
 	bs.Theta = bs.calcTheta()
 }
 
-func (bs *BS) HistoricalVolatility() {
-
-}
-
-func (bs *BS) StandardDeviation(days int, dataPoints []float64) float64 {
-	data := dataPoints[len(dataPoints)-days:]
-
-	var total float64
-
-	for _, d := range data {
-		total += d
-	}
-
-	mean := total / float64(days)
-
-	var temp float64
-
-	for _, d := range data {
-		temp += math.Pow(d-mean, 2)
-	}
-
-	return math.Sqrt(temp / float64(days))
-}
-
 func (bs *BS) calcD1(underlyingPrice float64, strikePrice float64, riskFreeInterestRate float64, timeToExpiration float64, volatility float64) float64 {
 	return (math.Log(underlyingPrice/strikePrice) + (riskFreeInterestRate+math.Pow(volatility, 2)/2)*timeToExpiration) / (volatility * math.Sqrt(timeToExpiration))
 }
@@ -104,17 +80,38 @@ func (bs *BS) calcTheta() float64 {
 	return -((bs.UnderlyingPrice * bs.Volatility * bs.Norm.Cdf(bs.D1)) / (2 * math.Sqrt(bs.TimeToExpiration)) - bs.RiskFreeInterestRate * bs.StrikePrice * math.Exp(-bs.RiskFreeInterestRate * (bs.TimeToExpiration)) * bs.Norm.Cdf(bs.D2)) / 365
 }
 
-// func (bs *BS) calcVega() float64 {
+func (bs *BS) calcVega() float64 {
 	
-// }
+}
+
+func (bs *BS) calcGamma() float64 {
+	
+}
+
+func (bs *BS) calcVanna() float64 {
+	
+}
+
+func (bs *BS) calcVolga() float64 {
+	
+}
+
+func (bs *BS) calcColour() float64 {
+	
+}
+
+func (bs *BS) calcSpeed() float64 {
+	
+}
+
+func (bs *BS) calcCharm() float64 {
+	
+}
 
 func (bs *BS) calcIv() float64 {
 	vol := math.Sqrt(2*math.Pi/bs.TimeToExpiration) * bs.TheoPrice / bs.UnderlyingPrice
 
 	for i := 0; i < 100; i++ {
-		// d1 := (math.Log(bs.UnderlyingPrice/bs.StrikePrice) + (bs.RiskFreeInterestRate+0.5*math.Pow(vol, 2))*bs.TimeToExpiration) / (vol * math.Sqrt(bs.TimeToExpiration))
-		// d2 := d1 - vol*math.Sqrt(bs.TimeToExpiration)
-
 		d1 := bs.calcD1(bs.UnderlyingPrice, bs.StrikePrice, bs.RiskFreeInterestRate, bs.TimeToExpiration, vol)
 		d2 := bs.calcD2(d1, vol, bs.TimeToExpiration)
 		vega := bs.UnderlyingPrice * bs.Norm.Cdf(d1) * math.Sqrt(bs.TimeToExpiration)
