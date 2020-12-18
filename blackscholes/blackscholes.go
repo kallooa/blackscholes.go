@@ -34,13 +34,13 @@ type BS struct {
 	Norm                 *gaussian.Gaussian
 }
 
-func NewBlackScholes(option *Option, underlying *Underlying, riskFreeInterestRate float64) *BS {
+func NewBlackScholes(option *Option, underlying *Underlying) *BS {
 	bs := &BS{
 		StrikePrice:          option.StrikePrice,
 		UnderlyingPrice:      underlying.Price,
-		RiskFreeInterestRate: riskFreeInterestRate,
+		RiskFreeInterestRate: 0.0,
 		Volatility:           underlying.Volatility,
-		TimeToExpiration:     float64(option.TimeToExpiration / 365),
+		TimeToExpiration:     float64(option.TimeToExpiration / 365.25),
 		Type:                 option.Type,
 	}
 
